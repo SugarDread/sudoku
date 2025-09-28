@@ -1,0 +1,17 @@
+###
+GET http://localhost:8080/api/boards
+
+###
+GET http://localhost:8080/api/boards/MEDIUM
+
+###
+GET http://localhost:8080/api/boards/EASY
+
+###
+GET http://localhost:8080/api/boards/HARD
+
+###
+GET http://localhost:8080/api/boards/EXPERT
+
+###
+GET localhost:8080/api/boards/EASY/random

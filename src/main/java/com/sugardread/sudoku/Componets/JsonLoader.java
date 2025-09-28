@@ -1,7 +1,9 @@
-package com.sugardread.sudoku.Models;
+package com.sugardread.sudoku.Componets;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sugardread.sudoku.Models.Board;
+import com.sugardread.sudoku.Models.BoardRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -15,11 +17,11 @@ import java.util.List;
 public class JsonLoader implements CommandLineRunner {
 
     static private final Logger log = LoggerFactory.getLogger(JsonLoader.class);
-    private final BoardService boardService;
+    private final BoardRepository boardRepository;
     private final ObjectMapper objectMapper;
 
-    JsonLoader(BoardService boardService, ObjectMapper objectMapper) {
-        this.boardService = boardService;
+    JsonLoader(BoardRepository boardRepository, ObjectMapper objectMapper) {
+        this.boardRepository = boardRepository;
         this.objectMapper = objectMapper;
     }
 
@@ -28,13 +30,13 @@ public class JsonLoader implements CommandLineRunner {
         try (InputStream inputStream = getClass().getResourceAsStream("/data/boards.json")) {
             List<Board> boards = objectMapper.readValue(inputStream, new TypeReference<>() {
             });
-            if (boards.size() == boardService.count()) {
+            if (boards.size() == boardRepository.count()) {
                 log.info("No new boards");
                 return;
             }
             for (Board board : boards) {
-                if (boardService.findById(board.id()).isEmpty()) {
-                    boardService.save(board);
+                if (boardRepository.findById(board.id()).isEmpty()) {
+                    boardRepository.save(board);
                 }
             }
             log.info("Reading new boards");
