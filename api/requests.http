@@ -14,4 +14,11 @@ GET http://localhost:8080/api/boards/HARD
 GET http://localhost:8080/api/boards/EXPERT
 
 ###
-GET localhost:8080/api/boards/EASY/random
+GET localhost:8080/api/board/EASY/random
+
+###
+GET localhost:8080/api/board/100
+
+###
+POST http://localhost:8080/api/board/validate?id=1&position=0&value=5
+

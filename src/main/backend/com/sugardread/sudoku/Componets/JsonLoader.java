@@ -30,16 +30,18 @@ public class JsonLoader implements CommandLineRunner {
         try (InputStream inputStream = getClass().getResourceAsStream("/data/boards.json")) {
             List<Board> boards = objectMapper.readValue(inputStream, new TypeReference<>() {
             });
-            if (boards.size() == boardRepository.count()) {
-                log.info("No new boards");
-                return;
-            }
+
             for (Board board : boards) {
                 if (boardRepository.findById(board.id()).isEmpty()) {
                     boardRepository.save(board);
                 }
+                if (boardRepository.findById(board.id()).isPresent() && !board.equals(boardRepository.findById(board.id()).get())) {
+                    boardRepository.delete(boardRepository.findById(board.id()).get());
+                    boardRepository.save(board);
+                }
             }
-            log.info("Reading new boards");
+
+            log.info("Reading boards");
         } catch (IOException e) {
             throw new RuntimeException("Failed to load json", e);
         }
